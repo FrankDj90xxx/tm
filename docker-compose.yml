@@ -1,0 +1,11 @@
+version: '3'
+services:
+  tm-app:
+    build: .
+    container_name: tm-app
+    restart: always
+    volumes:
+      - ./:/app
+    working_dir: /app
+    stdin_open: true  # 保持标准输入流打开
+    tty: true  # 启用伪终端，方便进入交互模式

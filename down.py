@@ -20,7 +20,7 @@ class Img(Base):
 
 
 # 创建数据库引擎
-engine = create_engine('mysql+pymysql://root:123456@localhost:3306/tm_db')
+engine = create_engine('mysql+pymysql://root:root@localhost:3306/tm_db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
