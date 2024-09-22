@@ -229,21 +229,23 @@ def crawl_taobao(keyword):
 
     # 创建 ChromeOptions 对象
     options = webdriver.ChromeOptions()
+    
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    # options.add_argument("--headless")  # 如果需要无头模式
-    options.add_argument("--disable-infobars")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")  
     options.add_argument("--disable-extensions")
-    options.add_argument("--window-size=1920x1080")  # 设置窗口大小
+ 
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+
+   
 
     # 随机选择代理
     # proxy = get_random_proxy()  # 获取随机代理
     # options.add_argument(f'--proxy-server=http://{proxy}')  # 设置代理
 
     # 初始化 WebDriver，使用 ChromeDriverManager
-    driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
 
     # # 初始化 WebDriver
     # driver = uc.Chrome(options=options)
@@ -263,6 +265,8 @@ def crawl_taobao(keyword):
 
     # 登录后搜索关键字
     driver.get(f'https://s.taobao.com/search?q={keyword}')
+    driver.execute_script("Object.defineProperty(window, 'outerWidth', { get: () => window.innerWidth });")
+    driver.execute_script("Object.defineProperty(window, 'outerHeight', { get: () => window.innerHeight });")
     time.sleep(random.uniform(10, 20))
 
     # 循环抓取每一页
@@ -357,15 +361,7 @@ def scroll_to_reviews(driver):
     last_height = driver.execute_script("return document.body.scrollHeight")
     while True:
         try:
-            # 尝试找到“用户评价”按钮
-            # review_button = driver.find_element(
-            #     By.XPATH, '//div[contains(@class, "tabTitleItem--") and contains(.,"用户评价")]//span')
-            # review_button.click()
-            # time.sleep(3)  # 等待页面滚动到评价区域
-
-            # review_button = driver.find_element(By.XPATH, '//a[contains(@class, "tab-title") and contains(text(), "全部评论")]')
-            # review_button.click()
-            # time.sleep(3)
+       
             review_button = driver.find_element(By.XPATH, '//div[contains(@class, "ShowButton--") and contains(text(), "全部评价")]')
             review_button.click()
             time.sleep(3)
